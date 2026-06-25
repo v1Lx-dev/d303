@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Losowanie - Oś. Dywizjonu 303</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+        }
+        button {
+            padding: 20px 40px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 6px 10px rgba(0,0,0,0.3);
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        button:hover:not(:disabled) {
+            background-color: #c0392b;
+        }
+        button:active:not(:disabled) {
+            transform: translateY(2px);
+            box-shadow: 0 3px 5px rgba(0,0,0,0.3);
+        }
+        /* Nowy styl dla zablokowanego przycisku podczas odliczania */
+        button:disabled {
+            background-color: #7f8c8d;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        #wynik {
+            margin-top: 40px;
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            min-height: 45px;
+            padding: 0 20px;
+            color: #f1c40f;
+            transition: color 0.3s ease;
+        }
+        /* Styl dla samego odliczania (biały kolor, żeby odróżnić od złotej odpowiedzi) */
+        .odliczanie {
+            color: #ecf0f1 !important;
+            font-size: 40px !important;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="przycisk" onclick="losuj()">Jakim mieszkańcem osiedla Dywizjonu 303 jesteś dziś?</button>
+    <div id="wynik"></div>
+
+    <script>
+        const odpowiedzi = [
+            "Klupa zdrajca ojczyzny",
+            "Klupa nierób",
+            "Bronek w lateksie",
+            "Klupa ukrainiec",
+            "Klupa bohater UPA",
+            "Klupa ogarniający coś na studia",
+            "Bronek z jabłkami",
+            "Bronek z pocztówką z Tomaszowa Lubelskiego",
+            "Klupa instruktor jazdy",
+            "Klupa pałujący strajkujących górników kopalni \"Wujek\"",
+            "Klupa bolszewik",
+            "Klupa głosuję na Adriana na na na na na!",
+            "Klupa na zjeździe narkotykowym",
+            "Klupa na kacu po nocnym klubie studio",
+            "Szonik Klupy z klubu studio",
+            "Julka z jamnikiem",
+            "Jamnik na psychotropach"
+        ];
+
+        // Funkcja pomocnicza do tworzenia opóźnienia
+        function czekaj(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function losuj() {
+            const przycisk = document.getElementById('przycisk');
+            const wynik = document.getElementById('wynik');
+            
+            // 1. Zablokuj przycisk na czas losowania
+            przycisk.disabled = true;
+            
+            // 2. Dodaj klasę wizualną dla odliczania i zacznij animację
+            wynik.className = "odliczanie";
+            
+            wynik.innerText = "3...";
+            await czekaj(800); // Czeka 0.8 sekundy
+            
+            wynik.innerText = "2...";
+            await czekaj(800);
+            
+            wynik.innerText = "1...";
+            await czekaj(800);
+            
+            // 3. Wylosuj odpowiedź
+            const losowyIndeks = Math.floor(Math.random() * odpowiedzi.length);
+            
+            // 4. Usuń klasę odliczania, pokaż ostateczny wynik w złotym kolorze
+            wynik.className = "";
+            wynik.innerText = odpowiedzi[losowyIndeks];
+            
+            // 5. Odblokuj przycisk, aby można było zagrać jeszcze raz
+            przycisk.disabled = false;
+        }
+    </script>
+
+</body>
+</html>

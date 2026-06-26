@@ -82,4 +82,50 @@
             "Losowa kurewka Klupy z klubu studio",
             "Julka z jamnikiem",
             "Jamnik na psychotropach",
-            "Klupa zmęczony po jeżdżeniu
+            "Klupa zmęczony po jeżdżeniu eLką",
+            "Klupa nieszczery",
+            "Klupa wróg publiczny",
+            "Klupa posikany",
+            "Klupa przebodźcowany",
+            "Klupa kłamca",
+            "Klupa oszust"
+        ];
+
+        // Funkcja pomocnicza do tworzenia opóźnienia
+        function czekaj(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function losuj() {
+            const przycisk = document.getElementById('przycisk');
+            const wynik = document.getElementById('wynik');
+            
+            // 1. Zablokuj przycisk na czas losowania
+            przycisk.disabled = true;
+            
+            // 2. Dodaj klasę wizualną dla odliczania i zacznij animację
+            wynik.className = "odliczanie";
+            
+            wynik.innerText = "3...";
+            await czekaj(800); // Czeka 0.8 sekundy
+            
+            wynik.innerText = "2...";
+            await czekaj(800);
+            
+            wynik.innerText = "1...";
+            await czekaj(800);
+            
+            // 3. Wylosuj odpowiedź
+            const losowyIndeks = Math.floor(Math.random() * odpowiedzi.length);
+            
+            // 4. Usuń klasę odliczania, pokaż ostateczny wynik w złotym kolorze
+            wynik.className = "";
+            wynik.innerText = odpowiedzi[losowyIndeks];
+            
+            // 5. Odblokuj przycisk, aby można było zagrać jeszcze raz
+            przycisk.disabled = false;
+        }
+    </script>
+
+</body>
+</html>

@@ -35,7 +35,7 @@
             transform: translateY(2px);
             box-shadow: 0 3px 5px rgba(0,0,0,0.3);
         }
-        /* Nowy styl dla zablokowanego przycisku podczas odliczania */
+        /* Nowy styl dla zablokowanego przycisku podczas odliczania i po losowaniu */
         button:disabled {
             background-color: #7f8c8d;
             cursor: not-allowed;
@@ -105,6 +105,28 @@
             return new Promise(resolve => setTimeout(resolve, ms));
         }
 
+        // Funkcja pomocnicza pobierająca dzisiejszą datę w formacie (np. 27.06.2026)
+        function pobierzDzisiejszaDate() {
+            return new Date().toLocaleDateString('pl-PL');
+        }
+
+        // Sprawdzanie przy wejściu na stronę, czy użytkownik już dziś losował
+        window.onload = function() {
+            const dzisiaj = pobierzDzisiejszaDate();
+            const ostatniaData = localStorage.getItem('dataLosowania');
+            const zapisanyWynik = localStorage.getItem('wynikLosowania');
+
+            // Jeśli data w pamięci przeglądarki zgadza się z dzisiejszą
+            if (ostatniaData === dzisiaj && zapisanyWynik) {
+                const przycisk = document.getElementById('przycisk');
+                const wynik = document.getElementById('wynik');
+                
+                przycisk.disabled = true;
+                przycisk.innerText = "Już dziś losowałeś! Wróć jutro.";
+                wynik.innerText = zapisanyWynik;
+            }
+        };
+
         async function losuj() {
             const przycisk = document.getElementById('przycisk');
             const wynik = document.getElementById('wynik');
@@ -126,13 +148,18 @@
             
             // 3. Wylosuj odpowiedź
             const losowyIndeks = Math.floor(Math.random() * odpowiedzi.length);
+            const wylosowanaOdp = odpowiedzi[losowyIndeks];
             
             // 4. Usuń klasę odliczania, pokaż ostateczny wynik w złotym kolorze
             wynik.className = "";
-            wynik.innerText = odpowiedzi[losowyIndeks];
+            wynik.innerText = wylosowanaOdp;
             
-            // 5. Odblokuj przycisk, aby można było zagrać jeszcze raz
-            przycisk.disabled = false;
+            // 5. Zapisz dzisiejszą datę i wynik do pamięci przeglądarki
+            localStorage.setItem('dataLosowania', pobierzDzisiejszaDate());
+            localStorage.setItem('wynikLosowania', wylosowanaOdp);
+            
+            // 6. Zmień tekst przycisku i pozostaw go zablokowanym
+            przycisk.innerText = "Już dziś losowałeś! Wróć jutro.";
         }
     </script>
 

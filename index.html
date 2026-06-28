@@ -10,13 +10,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            justify-content: flex-start;
+            min-height: 100vh;
             margin: 0;
+            padding: 40px 20px;
+            box-sizing: border-box;
             background-color: #2c3e50;
             color: #ecf0f1;
         }
-        button {
+        button.glowny {
             padding: 20px 40px;
             font-size: 20px;
             font-weight: bold;
@@ -27,20 +29,37 @@
             border-radius: 10px;
             box-shadow: 0 6px 10px rgba(0,0,0,0.3);
             transition: background-color 0.2s, transform 0.1s;
+            margin-top: 5vh;
         }
-        button:hover:not(:disabled) {
+        button.glowny:hover:not(:disabled) {
             background-color: #c0392b;
         }
-        button:active:not(:disabled) {
+        button.glowny:active:not(:disabled) {
             transform: translateY(2px);
             box-shadow: 0 3px 5px rgba(0,0,0,0.3);
         }
-        /* Nowy styl dla zablokowanego przycisku podczas odliczania i po losowaniu */
-        button:disabled {
+        button.glowny:disabled {
             background-color: #7f8c8d;
             cursor: not-allowed;
             box-shadow: none;
         }
+        
+        /* Styl dla mniejszego przycisku katalogu */
+        button.katalog-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+        button.katalog-btn:hover {
+            background-color: #2980b9;
+        }
+
         #wynik {
             margin-top: 40px;
             font-size: 32px;
@@ -51,17 +70,58 @@
             color: #f1c40f;
             transition: color 0.3s ease;
         }
-        /* Styl dla samego odliczania (biały kolor, żeby odróżnić od złotej odpowiedzi) */
         .odliczanie {
             color: #ecf0f1 !important;
             font-size: 40px !important;
+        }
+
+        /* Sekcja katalogu */
+        #katalog-kontener {
+            display: none; /* Domyślnie ukryty */
+            width: 100%;
+            max-width: 600px;
+            margin-top: 30px;
+            background-color: #34495e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        #katalog-statystyki {
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #bdc3c7;
+        }
+        .postac {
+            padding: 10px;
+            border-bottom: 1px solid #7f8c8d;
+            font-size: 16px;
+        }
+        .postac:last-child {
+            border-bottom: none;
+        }
+        .odblokowana {
+            color: #f1c40f; /* Złoty dla zdobytych */
+            font-weight: bold;
+        }
+        .zablokowana {
+            color: #7f8c8d; /* Szary dla niezdobytych */
+            font-style: italic;
         }
     </style>
 </head>
 <body>
 
-    <button id="przycisk" onclick="losuj()">Jakim mieszkańcem osiedla Dywizjonu 303 jesteś dziś?</button>
+    <button id="przycisk" class="glowny" onclick="losuj()">Jakim mieszkańcem osiedla Dywizjonu 303 jesteś dziś?</button>
     <div id="wynik"></div>
+    
+    <button class="katalog-btn" onclick="pokazUkryjKatalog()">📖 Pokaż katalog postaci</button>
+
+    <div id="katalog-kontener">
+        <div id="katalog-statystyki"></div>
+        <div id="katalog-lista"></div>
+    </div>
 
     <script>
         const odpowiedzi = [
@@ -96,27 +156,27 @@
             "Klupa niebinarny",
             "Klupa eco-friendly",
             "Klupa Zielony Ład",
-            "Klupa kolega Olgierda",
-            "Klupa Mercosur"
+            "Klupa kolega pedofili",
+            "Klupa zwolennik Mercosur",
+            "Klupa przyklejony do asfaltu"
         ];
 
-        // Funkcja pomocnicza do tworzenia opóźnienia
+        // Pobieramy odblokowane postaci z pamięci (jeśli jeszcze nie ma, tworzymy pustą listę)
+        let odblokowanePostaci = JSON.parse(localStorage.getItem('odblokowanePostaci')) || [];
+
         function czekaj(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
 
-        // Funkcja pomocnicza pobierająca dzisiejszą datę w formacie (np. 27.06.2026)
         function pobierzDzisiejszaDate() {
             return new Date().toLocaleDateString('pl-PL');
         }
 
-        // Sprawdzanie przy wejściu na stronę, czy użytkownik już dziś losował
         window.onload = function() {
             const dzisiaj = pobierzDzisiejszaDate();
             const ostatniaData = localStorage.getItem('dataLosowania');
             const zapisanyWynik = localStorage.getItem('wynikLosowania');
 
-            // Jeśli data w pamięci przeglądarki zgadza się z dzisiejszą
             if (ostatniaData === dzisiaj && zapisanyWynik) {
                 const przycisk = document.getElementById('przycisk');
                 const wynik = document.getElementById('wynik');
@@ -125,20 +185,20 @@
                 przycisk.innerText = "Już dziś losowałeś! Wróć jutro.";
                 wynik.innerText = zapisanyWynik;
             }
+            
+            // Odśwież widok katalogu w tle przy ładowaniu strony
+            generujKatalog();
         };
 
         async function losuj() {
             const przycisk = document.getElementById('przycisk');
             const wynik = document.getElementById('wynik');
             
-            // 1. Zablokuj przycisk na czas losowania
             przycisk.disabled = true;
-            
-            // 2. Dodaj klasę wizualną dla odliczania i zacznij animację
             wynik.className = "odliczanie";
             
             wynik.innerText = "3...";
-            await czekaj(800); // Czeka 0.8 sekundy
+            await czekaj(800);
             
             wynik.innerText = "2...";
             await czekaj(800);
@@ -146,20 +206,64 @@
             wynik.innerText = "1...";
             await czekaj(800);
             
-            // 3. Wylosuj odpowiedź
             const losowyIndeks = Math.floor(Math.random() * odpowiedzi.length);
             const wylosowanaOdp = odpowiedzi[losowyIndeks];
             
-            // 4. Usuń klasę odliczania, pokaż ostateczny wynik w złotym kolorze
             wynik.className = "";
             wynik.innerText = wylosowanaOdp;
             
-            // 5. Zapisz dzisiejszą datę i wynik do pamięci przeglądarki
+            // Zapisz blokadę dzienną
             localStorage.setItem('dataLosowania', pobierzDzisiejszaDate());
             localStorage.setItem('wynikLosowania', wylosowanaOdp);
             
-            // 6. Zmień tekst przycisku i pozostaw go zablokowanym
+            // Dodaj do katalogu, jeśli jeszcze tam nie ma
+            if (!odblokowanePostaci.includes(wylosowanaOdp)) {
+                odblokowanePostaci.push(wylosowanaOdp);
+                // Zapisujemy zaktualizowaną listę w pamięci przeglądarki jako tekst JSON
+                localStorage.setItem('odblokowanePostaci', JSON.stringify(odblokowanePostaci));
+                // Aktualizujemy widok katalogu
+                generujKatalog();
+            }
+            
             przycisk.innerText = "Już dziś losowałeś! Wróć jutro.";
+        }
+
+        // Funkcja rozwijająca/zwijająca katalog
+        function pokazUkryjKatalog() {
+            const kontener = document.getElementById('katalog-kontener');
+            if (kontener.style.display === "none" || kontener.style.display === "") {
+                kontener.style.display = "block";
+            } else {
+                kontener.style.display = "none";
+            }
+        }
+
+        // Funkcja rysująca zawartość katalogu
+        function generujKatalog() {
+            const lista = document.getElementById('katalog-lista');
+            const statystyki = document.getElementById('katalog-statystyki');
+            
+            // Wyczyść starą listę
+            lista.innerHTML = "";
+            
+            // Pokaż postęp np. "Odblokowano: 5 / 33"
+            statystyki.innerText = `Odblokowano: ${odblokowanePostaci.length} / ${odpowiedzi.length}`;
+
+            // Wygeneruj każdą postać
+            odpowiedzi.forEach((postac, indeks) => {
+                const elementDiv = document.createElement('div');
+                
+                // Sprawdzamy, czy wylosowałeś już tę postać
+                if (odblokowanePostaci.includes(postac)) {
+                    elementDiv.className = "postac odblokowana";
+                    elementDiv.innerText = `${indeks + 1}. ${postac}`;
+                } else {
+                    elementDiv.className = "postac zablokowana";
+                    elementDiv.innerText = `${indeks + 1}. ??? (Zablokowana)`;
+                }
+                
+                lista.appendChild(elementDiv);
+            });
         }
     </script>
 

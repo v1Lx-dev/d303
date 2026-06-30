@@ -13,256 +13,614 @@
             justify-content: flex-start;
             min-height: 100vh;
             margin: 0;
-            padding: 40px 20px;
+            padding: 20px 20px 60px 20px;
             box-sizing: border-box;
             background-color: #2c3e50;
             color: #ecf0f1;
         }
-        button.glowny {
-            padding: 20px 40px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            background-color: #e74c3c;
-            color: white;
-            border: none;
+
+        /* --- UI TALONÓW --- */
+        #pulpit-talonow {
+            background-color: #34495e;
+            padding: 10px 30px;
             border-radius: 10px;
-            box-shadow: 0 6px 10px rgba(0,0,0,0.3);
-            transition: background-color 0.2s, transform 0.1s;
-            margin-top: 5vh;
-        }
-        button.glowny:hover:not(:disabled) {
-            background-color: #c0392b;
-        }
-        button.glowny:active:not(:disabled) {
-            transform: translateY(2px);
-            box-shadow: 0 3px 5px rgba(0,0,0,0.3);
-        }
-        button.glowny:disabled {
-            background-color: #7f8c8d;
-            cursor: not-allowed;
-            box-shadow: none;
+            border: 2px solid #f1c40f;
+            font-size: 24px;
+            font-weight: bold;
+            color: #f1c40f;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            text-align: center;
         }
         
-        /* Styl dla mniejszego przycisku katalogu */
-        button.katalog-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            transition: background-color 0.2s;
-        }
-        button.katalog-btn:hover {
-            background-color: #2980b9;
-        }
-
-        #wynik {
-            margin-top: 40px;
-            font-size: 32px;
-            font-weight: bold;
-            text-align: center;
-            min-height: 45px;
-            padding: 0 20px;
-            color: #f1c40f;
-            transition: color 0.3s ease;
-        }
-        .odliczanie {
-            color: #ecf0f1 !important;
-            font-size: 40px !important;
-        }
-
-        /* Sekcja katalogu */
-        #katalog-kontener {
-            display: none; /* Domyślnie ukryty */
+        .panel-glowny {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
             width: 100%;
             max-width: 600px;
-            margin-top: 30px;
-            background-color: #34495e;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
-        #katalog-statystyki {
-            text-align: center;
-            font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: #bdc3c7;
+
+        /* --- PRZYCISKI --- */
+        button { font-family: inherit; }
+        button.btn-losuj {
+            padding: 20px 40px; font-size: 20px; font-weight: bold; cursor: pointer;
+            background-color: #27ae60; color: white; border: none; border-radius: 10px;
+            box-shadow: 0 6px 10px rgba(0,0,0,0.3); transition: 0.2s; width: 100%;
         }
-        .postac {
-            padding: 10px;
-            border-bottom: 1px solid #7f8c8d;
-            font-size: 16px;
+        button.btn-losuj:hover:not(:disabled) { background-color: #2ecc71; }
+        button.btn-losuj:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 3px 5px rgba(0,0,0,0.3); }
+        button.btn-losuj:disabled { background-color: #7f8c8d; cursor: not-allowed; box-shadow: none; }
+
+        button.btn-kasyno {
+            padding: 15px 30px; font-size: 18px; font-weight: bold; cursor: pointer;
+            background-color: #c0392b; color: white; border: none; border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3); transition: 0.2s; width: 100%;
         }
-        .postac:last-child {
-            border-bottom: none;
+        button.btn-kasyno:hover:not(:disabled) { background-color: #e74c3c; }
+        button.btn-kasyno:disabled { background-color: #7f8c8d; cursor: not-allowed; box-shadow: none; }
+
+        button.katalog-btn {
+            margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer;
+            background-color: #3498db; color: white; border: none; border-radius: 5px; transition: 0.2s;
         }
-        .odblokowana {
-            color: #f1c40f; /* Złoty dla zdobytych */
-            font-weight: bold;
+        button.katalog-btn:hover { background-color: #2980b9; }
+
+        /* --- SEKCJA KASYNA --- */
+        #panel-kasyna {
+            display: none; width: 100%; max-width: 600px; background-color: #1a252f;
+            padding: 20px; border-radius: 10px; border: 2px solid #e74c3c;
+            text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); margin-bottom: 20px;
         }
-        .zablokowana {
-            color: #7f8c8d; /* Szary dla niezdobytych */
-            font-style: italic;
+        .kasyno-tytul { color: #e74c3c; font-size: 24px; font-weight: bold; margin-bottom: 10px; }
+        .kasyno-opis { color: #bdc3c7; font-size: 14px; margin-bottom: 20px; }
+        
+        .kasyno-przyciski { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px;}
+        .btn-obstaw {
+            padding: 15px 20px; font-size: 16px; font-weight: bold; cursor: pointer;
+            color: white; border: 2px solid rgba(255,255,255,0.2); border-radius: 8px; flex: 1; min-width: 120px; transition: 0.2s;
         }
+        .btn-obstaw:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-obstaw:hover:not(:disabled) { transform: translateY(-3px); border-color: white; }
+        .bg-czerwony { background-color: #e74c3c; }
+        .bg-czarny { background-color: #2c3e50; border: 2px solid #7f8c8d; }
+        .bg-zielony { background-color: #27ae60; }
+
+        .btn-wroc {
+            background-color: #7f8c8d; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px;
+        }
+
+        /* RULETKA KASYNA (KOLORY) */
+        #ruletka-kasyno {
+            display: none; width: 100%; height: 80px; overflow: hidden; position: relative;
+            background-color: #000; border: 3px solid #f1c40f; border-radius: 5px; margin: 20px 0;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+        }
+        #rk-kursor {
+            position: absolute; left: 50%; top: 0; height: 100%; width: 4px;
+            background-color: #f1c40f; z-index: 10; margin-left: -2px; box-shadow: 0 0 10px #f1c40f;
+        }
+        #rk-pasek {
+            position: absolute; top: 0; left: 0; height: 100%; display: flex; flex-direction: row;
+        }
+        .rk-item {
+            width: 80px; height: 100%; box-sizing: border-box; border-right: 1px solid rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center; font-weight: bold; color: rgba(255,255,255,0.3); font-size: 24px;
+        }
+
+        /* --- MODAL WYNIKU KASYNA --- */
+        #modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 100; align-items: center; justify-content: center;
+        }
+        .modal-box {
+            background: #2c3e50; padding: 30px; border-radius: 10px; text-align: center; max-width: 400px;
+            border: 2px solid #f1c40f; box-shadow: 0 0 20px rgba(0,0,0,0.7);
+        }
+        .modal-box h2 { margin-top: 0; font-size: 28px; }
+        .modal-box p { font-size: 18px; margin-bottom: 25px; }
+        .modal-btn {
+            padding: 12px 20px; margin: 5px; border: none; border-radius: 5px; cursor: pointer;
+            font-weight: bold; font-size: 16px; color: white; transition: 0.2s; width: 100%;
+        }
+        .modal-btn-graj { background-color: #e74c3c; }
+        .modal-btn-graj:hover { background-color: #c0392b; }
+        .modal-btn-losuj { background-color: #27ae60; }
+        .modal-btn-losuj:hover { background-color: #2ecc71; }
+        .modal-btn-smutek { background-color: #7f8c8d; }
+
+        /* --- WYNIK LOSOWANIA POSTACI I RULETKA --- */
+        #wynik-kontener {
+            margin-top: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; width: 100%;
+        }
+        #wynik { font-size: 34px; font-weight: bold; padding: 0 20px; transition: 0.3s; }
+        #wylosowany-tier { font-size: 16px; margin-top: 5px; text-transform: uppercase; letter-spacing: 2px; opacity: 0; }
+        
+        #ruletka-postaci {
+            display: none; width: 100%; max-width: 600px; height: 240px; overflow: hidden; position: relative;
+            background-color: #1a252f; border: 2px solid #34495e; border-radius: 10px; box-shadow: inset 0 0 15px rgba(0,0,0,0.8); margin-bottom: 20px;
+        }
+        #rp-kursor {
+            position: absolute; top: 50%; left: 0; width: 100%; height: 40px; margin-top: -20px;
+            border-top: 2px solid #e74c3c; border-bottom: 2px solid #e74c3c; background: rgba(231, 76, 60, 0.15); z-index: 2; pointer-events: none;
+        }
+        #rp-pasek { position: absolute; top: 0; left: 0; width: 100%; display: flex; flex-direction: column; }
+        .rp-item { height: 40px; box-sizing: border-box; border-bottom: 2px solid #2c3e50; }
+
+        /* --- KOLORY RZADKOŚCI TEKSTU i TŁA --- */
+        .mityczna, .bg-mityczna { background: linear-gradient(270deg, #ff00cc, #3333ff, #ff00cc); background-size: 200% 200%; animation: fadeEffect 3s ease infinite; }
+        .mityczna { -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
+        @keyframes fadeEffect { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        .legendarna { color: #f1c40f; text-shadow: 0 0 8px rgba(241,196,15,0.5); font-weight: 900; } .bg-legendarna { background-color: #f1c40f; }
+        .epicka { color: #9b59b6; font-weight: bold; } .bg-epicka { background-color: #9b59b6; }
+        .rzadka { color: #3498db; font-weight: bold; } .bg-rzadka { background-color: #3498db; }
+        .niepospolita { color: #2ecc71; font-weight: bold; } .bg-niepospolita { background-color: #2ecc71; }
+        .zwykla { color: #ecf0f1; } .bg-zwykla { background-color: #bdc3c7; }
+        .zablokowana { color: #7f8c8d !important; font-style: italic; background: none !important; -webkit-text-fill-color: #7f8c8d !important; font-weight: normal; }
+
+        /* --- KATALOG & KONTRAKTY (skrócone style żeby kod był czystszy) --- */
+        #katalog-kontener { display: none; width: 100%; max-width: 700px; margin-top: 30px; background-color: #34495e; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+        #katalog-statystyki { text-align: center; font-weight: bold; font-size: 18px; margin-bottom: 20px; color: #bdc3c7; }
+        .kategoria-tytul { margin-top: 20px; margin-bottom: 10px; border-bottom: 2px solid #2c3e50; padding-bottom: 5px; font-size: 20px; }
+        .postac { padding: 8px 10px; font-size: 16px; display: flex; justify-content: space-between; }
+        .ilosc { color: #ecf0f1; font-size: 14px; background: rgba(0,0,0,0.2); padding: 2px 8px; border-radius: 10px; }
+
+        #wymiana-sekcja { margin-top: 30px; padding: 15px; background-color: #2c3e50; border-radius: 8px; border: 1px solid #1a252f; }
+        .wymiana-tytul { text-align: center; font-weight: bold; font-size: 18px; margin-bottom: 15px; color: #e67e22; }
+        .wymiana-rzad { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #34495e; font-size: 15px; }
+        .wymiana-btn { padding: 8px 12px; background-color: #e67e22; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .wymiana-btn:disabled { background-color: #7f8c8d; cursor: not-allowed; opacity: 0.5; }
+        .wymiana-btn:hover:not(:disabled) { background-color: #d35400; }
+
+        #kreator-kontraktu { display: none; margin-top: 20px; padding: 15px; background-color: #2c3e50; border-radius: 8px; border: 1px solid #e67e22; }
+        #kreator-naglowek { text-align: center; font-size: 18px; font-weight: bold; margin-bottom: 5px; }
+        #kreator-podtytul { text-align: center; font-size: 14px; color: #bdc3c7; margin-bottom: 20px; }
+        .kreator-sloty { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+        .slot { width: 100px; height: 100px; background-color: #1a252f; border: 2px dashed #7f8c8d; border-radius: 8px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 12px; cursor: pointer; padding: 5px; user-select: none; }
+        .slot.zapelniony { border-style: solid; border-color: #e67e22; background-color: #34495e; }
+        .karta-do-wyboru { background-color: #34495e; padding: 10px; margin-bottom: 8px; border-radius: 5px; display: flex; justify-content: space-between; cursor: pointer; user-select: none; }
+        .karta-do-wyboru.brak { opacity: 0.5; cursor: not-allowed; background-color: #1a252f; }
+        .kreator-akcje { display: flex; justify-content: space-between; margin-top: 20px; }
+        .btn-anuluj { background-color: #c0392b; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-zatwierdz { background-color: #27ae60; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-zatwierdz:disabled { opacity: 0.5; cursor: not-allowed; }
     </style>
 </head>
 <body>
 
-    <button id="przycisk" class="glowny" onclick="losuj()">Jakim mieszkańcem osiedla Dywizjonu 303 jesteś dziś?</button>
-    <div id="wynik"></div>
+    <div id="pulpit-talonow">🎟️ TWOJE TALONY: <span id="licznik-wartosc">0</span></div>
+
+    <div class="panel-glowny" id="panel-glowny">
+        <button id="btn-losuj" class="btn-losuj" onclick="losujPostac()">🎲 Losuj Postać (Koszt: 1 Talon)</button>
+        <button id="btn-kasyno" class="btn-kasyno" onclick="otworzKasyno()">🎰 Zagraj w Ruletkę Kasyno (Zaryzykuj Talony)</button>
+    </div>
+
+    <div id="panel-kasyna">
+        <div class="kasyno-tytul">KASYNO DYWIZJONU</div>
+        <div class="kasyno-opis">Obstawiasz <b>WSZYSTKIE</b> swoje obecne talony. Zwycięstwo podwaja stawkę (lub x14 na zielonym). Porażka czyści Twoje konto!</div>
+        
+        <div class="kasyno-przyciski" id="kasyno-kontrolki">
+            <button class="btn-obstaw bg-czerwony" onclick="grajWKasyne('czerwony')">🔴 Czerwone (x2)</button>
+            <button class="btn-obstaw bg-czarny" onclick="grajWKasyne('czarny')">⚫ Czarne (x2)</button>
+            <button class="btn-obstaw bg-zielony" onclick="grajWKasyne('zielony')">🟢 Zielone (x14)</button>
+        </div>
+
+        <div id="ruletka-kasyno">
+            <div id="rk-kursor"></div>
+            <div id="rk-pasek"></div>
+        </div>
+
+        <button class="btn-wroc" id="btn-wroc" onclick="zamknijKasyno()">🔙 Wróć do losowania kart</button>
+    </div>
+
+    <div id="wynik-kontener">
+        <div id="ruletka-postaci">
+            <div id="rp-kursor"></div>
+            <div id="rp-pasek"></div>
+        </div>
+        <div id="wynik"></div>
+        <div id="wylosowany-tier"></div>
+    </div>
     
-    <button class="katalog-btn" onclick="pokazUkryjKatalog()">📖 Pokaż katalog postaci</button>
+    <button class="katalog-btn" onclick="pokazUkryjKatalog()">📖 Pokaż katalog postaci i kontrakty</button>
 
     <div id="katalog-kontener">
         <div id="katalog-statystyki"></div>
         <div id="katalog-lista"></div>
+        <div id="wymiana-sekcja"></div>
+        
+        <div id="kreator-kontraktu">
+            <div id="kreator-naglowek"></div>
+            <div id="kreator-podtytul">Kliknij w karty poniżej, aby wrzucić je do kontraktu.</div>
+            <div class="kreator-sloty" id="kreator-sloty"></div>
+            <div id="kreator-karty-lista"></div>
+            <div class="kreator-akcje">
+                <button class="btn-anuluj" onclick="zamknijKreator()">❌ Anuluj</button>
+                <button id="btn-zatwierdz" class="btn-zatwierdz" onclick="zatwierdzKontrakt()" disabled>✅ Zatwierdź Kontrakt</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-overlay">
+        <div class="modal-box" id="modal-zawartosc">
+            </div>
     </div>
 
     <script>
-        const odpowiedzi = [
-            "Klupa zdrajca ojczyzny",
-            "Klupa nierób",
-            "Bronek w lateksie",
-            "Klupa ukrainiec",
-            "Klupa bohater UPA",
-            "Klupa wieczny student",
-            "Bronek z jabłkami",
-            "Bronek z pocztówką z Tomaszowa Lubelskiego",
-            "Klupa instruktor jazdy",
-            "Klupa pałujący strajkujących górników kopalni \"Wujek\"",
-            "Klupa bolszewik",
-            "Klupa głosuję na Adriana nanana na na!",
-            "Klupa na zjeździe narkotykowym",
-            "Klupa na kacu po nocy w klubie studio",
-            "Losowa kurewka Klupy z klubu studio",
-            "Julka z jamnikiem",
-            "Jamnik na psychotropach",
-            "Klupa zmęczony po jeżdżeniu eLką",
-            "Klupa nieszczery",
-            "Klupa wróg publiczny",
-            "Klupa posikany",
-            "Klupa przebodźcowany",
-            "Klupa kłamca",
-            "Klupa oszust",
-            "Klupa upadliniec",
-            "Klupa sprzedawczyk",
-            "Klupa konfident",
-            "Klupa aktywista antify",
-            "Klupa niebinarny",
-            "Klupa eco-friendly",
-            "Klupa Zielony Ład",
-            "Klupa kolega pedofili",
-            "Klupa zwolennik Mercosur",
-            "Klupa przyklejony do asfaltu"
+        const bazaPostaci = [
+            { nazwa: "Mityczna", szansa: 0.5, klasa: "mityczna", postaci: ["prof. PK Jakub Klupa", "Klupa doktor matematyki"] },
+            { nazwa: "Legendarna", szansa: 2.0, klasa: "legendarna", postaci: ["Jamnik na psychotropach", "Lodowy Bronek", "Bestia z dywizjonu", "Ruben Nersisyan"] },
+            { nazwa: "Epicka", szansa: 7.5, klasa: "epicka", postaci: ["Bronek z pocztówką z Tomaszowa Lubelskiego", "Klupa pałujący strajkujących górników kopalni \"Wujek\"", "Julka z jamnikiem", "Bronek pobity przez psychofankę", "Zmora senna Klupy", "Donald Klump", "Vladimir Klupin"] },
+            { nazwa: "Rzadka", szansa: 15.0, klasa: "rzadka", postaci: ["Klupa bohater UPA", "Bronek w lateksie", "Klupa pacyfikujący strajk stoczniowców", "TW Jakub K. ps. Bolek", "Benjamin Klupanjahu", "Osama Bin Klupen", "Bronek z Ciechocinka", "Henryk Kluppen - milicja kielecka", "Klupa w Banja Luka"] },
+            { nazwa: "Niepospolita", szansa: 30.0, klasa: "niepospolita", postaci: ["Klupa zdrajca ojczyzny", "Bronek z jabłkami", "Klupa głosuję na Adriana nanana na na!", "Klupa na zjeździe narkotykowym", "Losowa kurewka Klupy z klubu studio", "Klupa aktywista antify", "Klupa niebinarny", "Klupa von der Leyen", "Bronek kościelny", "Jamnik w stroju pszczółki Mai", "Klupa monter klimatyzacji", "Klupa z podłogi frytek kupa (4:04)", "Klupa zamachowiec", "Klupa Ostatnie Pokolenie", "Kluppe der Bösewicht", "Ormiański dostawca pizzy"] },
+            { nazwa: "Zwykła", szansa: 45.0, klasa: "zwykla", postaci: ["Klupa nierób", "Klupa wieczny student", "Klupa instruktor jazdy", "Klupa bolszewik", "Klupa na kacu po nocy w klubie studio", "Klupa przetyrany", "Klupa nieszczery", "Klupa wróg publiczny", "Klupa posikany", "Klupa przebodźcowany", "Klupa kłamca", "Klupa upadliniec", "Klupa oszust", "Klupa sprzedawczyk", "Klupa konfident", "Klupa eco-friendly", "Klupa kolega Olgierda", "Klupa zwolennik Mercosur", "Klupa ćpun", "Klupa kaucyjny", "Klupa brudny", "Klupa dawca (motocyklista)", "Klupa z kryminału", "Klupa z tatuażykiem", "Klupa z kryształem", "Klupa taksówkarz ukraińców", "Klupa walący z dychy (10 hrywien)", "Klupa ugotowany", "Klupa lewak", "Klupa weganin", "Klupa ZERO (bez cukru)"] }
         ];
 
-        // Pobieramy odblokowane postaci z pamięci (jeśli jeszcze nie ma, tworzymy pustą listę)
-        let odblokowanePostaci = JSON.parse(localStorage.getItem('odblokowanePostaci')) || [];
+        let ekwipunek = {};
+        let talony = 0;
 
-        function czekaj(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
+        function czekaj(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+        function pobierzDzisiejszaDate() { return new Date().toLocaleDateString('pl-PL'); }
 
-        function pobierzDzisiejszaDate() {
-            return new Date().toLocaleDateString('pl-PL');
-        }
-
+        // --- INICJALIZACJA I SYSTEM CODZIENNYCH TALONÓW ---
         window.onload = function() {
+            zaladujEkwipunek();
+            
+            // System codziennych talonów
+            talony = parseInt(localStorage.getItem('talony')) || 0;
             const dzisiaj = pobierzDzisiejszaDate();
-            const ostatniaData = localStorage.getItem('dataLosowania');
-            const zapisanyWynik = localStorage.getItem('wynikLosowania');
-
-            if (ostatniaData === dzisiaj && zapisanyWynik) {
-                const przycisk = document.getElementById('przycisk');
-                const wynik = document.getElementById('wynik');
-                
-                przycisk.disabled = true;
-                przycisk.innerText = "Już dziś losowałeś! Wróć jutro.";
-                wynik.innerText = zapisanyWynik;
+            const ostatnieLogowanie = localStorage.getItem('ostatnieLogowanie');
+            
+            if (ostatnieLogowanie !== dzisiaj) {
+                talony += 1; // +1 talon za nowy dzień
+                localStorage.setItem('ostatnieLogowanie', dzisiaj);
+                zapiszTalony();
             }
             
-            // Odśwież widok katalogu w tle przy ładowaniu strony
+            odswiezUI();
             generujKatalog();
         };
 
-        async function losuj() {
-            const przycisk = document.getElementById('przycisk');
-            const wynik = document.getElementById('wynik');
-            
-            przycisk.disabled = true;
-            wynik.className = "odliczanie";
-            
-            wynik.innerText = "3...";
-            await czekaj(800);
-            
-            wynik.innerText = "2...";
-            await czekaj(800);
-            
-            wynik.innerText = "1...";
-            await czekaj(800);
-            
-            const losowyIndeks = Math.floor(Math.random() * odpowiedzi.length);
-            const wylosowanaOdp = odpowiedzi[losowyIndeks];
-            
-            wynik.className = "";
-            wynik.innerText = wylosowanaOdp;
-            
-            // Zapisz blokadę dzienną
-            localStorage.setItem('dataLosowania', pobierzDzisiejszaDate());
-            localStorage.setItem('wynikLosowania', wylosowanaOdp);
-            
-            // Dodaj do katalogu, jeśli jeszcze tam nie ma
-            if (!odblokowanePostaci.includes(wylosowanaOdp)) {
-                odblokowanePostaci.push(wylosowanaOdp);
-                // Zapisujemy zaktualizowaną listę w pamięci przeglądarki jako tekst JSON
-                localStorage.setItem('odblokowanePostaci', JSON.stringify(odblokowanePostaci));
-                // Aktualizujemy widok katalogu
-                generujKatalog();
-            }
-            
-            przycisk.innerText = "Już dziś losowałeś! Wróć jutro.";
+        function zapiszTalony() {
+            localStorage.setItem('talony', talony);
         }
 
-        // Funkcja rozwijająca/zwijająca katalog
+        function odswiezUI() {
+            document.getElementById('licznik-wartosc').innerText = talony;
+            
+            const btnLosuj = document.getElementById('btn-losuj');
+            const btnKasyno = document.getElementById('btn-kasyno');
+            const obiektyKasyna = document.querySelectorAll('.btn-obstaw');
+
+            if (talony > 0) {
+                btnLosuj.disabled = false;
+                btnLosuj.innerText = "🎲 Losuj Postać (Koszt: 1 Talon)";
+                btnKasyno.disabled = false;
+                obiektyKasyna.forEach(b => b.disabled = false);
+            } else {
+                btnLosuj.disabled = true;
+                btnLosuj.innerText = "💀 Brak talonów. Do zobaczenia jutro!";
+                btnKasyno.disabled = true;
+                obiektyKasyna.forEach(b => b.disabled = true);
+            }
+        }
+
+        // --- SYSTEM KASYNA (RULETKA) ---
+        function otworzKasyno() {
+            document.getElementById('panel-glowny').style.display = 'none';
+            document.getElementById('wynik-kontener').style.display = 'none';
+            document.getElementById('panel-kasyna').style.display = 'block';
+            document.getElementById('ruletka-kasyno').style.display = 'none';
+            document.getElementById('btn-wroc').style.display = 'inline-block';
+        }
+
+        function zamknijKasyno() {
+            document.getElementById('panel-kasyna').style.display = 'none';
+            document.getElementById('panel-glowny').style.display = 'flex';
+            document.getElementById('wynik-kontener').style.display = 'flex';
+        }
+
+        async function grajWKasyne(wybranyKolor) {
+            if (talony <= 0) return;
+            
+            const postawioneTalony = talony;
+            talony = 0; // Zerujemy na czas kręcenia
+            zapiszTalony();
+            odswiezUI();
+
+            // UI podczas kręcenia
+            document.getElementById('btn-wroc').style.display = 'none';
+            const kontrolki = document.querySelectorAll('.btn-obstaw');
+            kontrolki.forEach(b => b.disabled = true);
+            
+            const ruletka = document.getElementById('ruletka-kasyno');
+            const pasek = document.getElementById('rk-pasek');
+            ruletka.style.display = 'block';
+            
+            // Losowanie wyniku (0-36). 0=zielony, 1-18=czerwony, 19-36=czarny
+            const num = Math.floor(Math.random() * 37);
+            let wygranyKolor = 'zielony';
+            if(num >= 1 && num <= 18) wygranyKolor = 'czerwony';
+            if(num >= 19 && num <= 36) wygranyKolor = 'czarny';
+
+            // Budowanie poziomego paska ruletki
+            pasek.style.transition = "none";
+            pasek.style.transform = "translateX(0)";
+            pasek.innerHTML = "";
+            
+            const ilosc = 60;
+            const docelowyIndeks = 50;
+
+            for(let i=0; i<ilosc; i++) {
+                let div = document.createElement('div');
+                div.className = 'rk-item';
+                
+                let renderKolor;
+                if(i === docelowyIndeks) {
+                    renderKolor = wygranyKolor;
+                } else {
+                    let r = Math.random();
+                    renderKolor = (r < 0.05) ? 'zielony' : (r < 0.52) ? 'czerwony' : 'czarny';
+                }
+                
+                if(renderKolor === 'czerwony') { div.style.backgroundColor = '#e74c3c'; div.innerText = 'R'; }
+                if(renderKolor === 'czarny') { div.style.backgroundColor = '#2c3e50'; div.innerText = 'B'; }
+                if(renderKolor === 'zielony') { div.style.backgroundColor = '#27ae60'; div.innerText = 'G'; }
+                
+                pasek.appendChild(div);
+            }
+
+            void pasek.offsetWidth;
+            
+            // Przesunięcie (szerokość elementu 80px, środek ruletki zależy od ekranu - przy 600px to 300px)
+            // Kursor jest idealnie na środku kontenera. 
+            const kontenerSzer = ruletka.offsetWidth;
+            const srodek = kontenerSzer / 2;
+            const przesuniecie = -(docelowyIndeks * 80) + srodek - 40; // -40 by zcentrować sam box 80px
+
+            pasek.style.transition = "transform 6s cubic-bezier(0.1, 0.85, 0.1, 1)";
+            pasek.style.transform = `translateX(${przesuniecie}px)`;
+
+            await czekaj(6500);
+
+            // ROZLICZENIE
+            if(wybranyKolor === wygranyKolor) {
+                let mnoznik = (wygranyKolor === 'zielony') ? 14 : 2;
+                let wygrana = postawioneTalony * mnoznik;
+                talony += wygrana;
+                zapiszTalony();
+                pokazModal(true, wygrana);
+            } else {
+                pokazModal(false, 0);
+            }
+            odswiezUI();
+        }
+
+        function pokazModal(wygrana, kwota) {
+            const overlay = document.getElementById('modal-overlay');
+            const box = document.getElementById('modal-zawartosc');
+            
+            if(wygrana) {
+                box.innerHTML = `
+                    <h2 style="color:#2ecc71;">🎉 WYGRANA!</h2>
+                    <p>Brawo! Twój stan konta to teraz: <b>${kwota} Talonów</b>.</p>
+                    <button class="modal-btn modal-btn-graj" onclick="zamknijModal('kasyno')">🎰 Gram dalej w Kasynie</button>
+                    <button class="modal-btn modal-btn-losuj" onclick="zamknijModal('losowanie')">🎲 Idę losować Postacie</button>
+                `;
+                box.style.borderColor = '#2ecc71';
+            } else {
+                box.innerHTML = `
+                    <h2 style="color:#e74c3c;">💀 BANKRUT</h2>
+                    <p>Przegrałeś wszystkie dzisiejsze talony. Do zobaczenia jutro...</p>
+                    <button class="modal-btn modal-btn-smutek" onclick="zamknijModal('koniec')">Zakończ z honorem</button>
+                `;
+                box.style.borderColor = '#e74c3c';
+            }
+            overlay.style.display = 'flex';
+        }
+
+        function zamknijModal(akcja) {
+            document.getElementById('modal-overlay').style.display = 'none';
+            document.getElementById('ruletka-kasyno').style.display = 'none';
+            document.getElementById('btn-wroc').style.display = 'inline-block';
+            
+            if(akcja === 'kasyno') {
+                // Zostajemy w kasynie
+            } else if(akcja === 'losowanie' || akcja === 'koniec') {
+                zamknijKasyno();
+            }
+        }
+
+
+        // --- SYSTEM LOSOWANIA POSTACI (Z POPRZEDNIEJ WERSJI) ---
+        function wylosujDrop() {
+            const roll = Math.random() * 100;
+            let sk = 0;
+            for (let kat of bazaPostaci) {
+                sk += kat.szansa;
+                if (roll <= sk) {
+                    const idx = Math.floor(Math.random() * kat.postaci.length);
+                    return { postac: kat.postaci[idx], klasa: kat.klasa, nazwa: kat.nazwa };
+                }
+            }
+            const domyslna = bazaPostaci[bazaPostaci.length - 1];
+            return { postac: domyslna.postaci[0], klasa: domyslna.klasa, nazwa: domyslna.nazwa };
+        }
+
+        async function losujPostac() {
+            if(talony < 1) return;
+            
+            // Pobranie opłaty
+            talony -= 1;
+            zapiszTalony();
+            odswiezUI();
+
+            const btnLosuj = document.getElementById('btn-losuj');
+            const wynik = document.getElementById('wynik');
+            const tier = document.getElementById('wylosowany-tier');
+            const ruletkaKontener = document.getElementById('ruletka-postaci');
+            const pasek = document.getElementById('rp-pasek');
+            
+            btnLosuj.disabled = true; document.getElementById('btn-kasyno').disabled = true;
+            wynik.style.display = "none"; tier.style.opacity = 0;
+            ruletkaKontener.style.display = "block"; 
+            
+            const drop = wylosujDrop();
+            
+            pasek.style.transition = "none";
+            pasek.style.transform = "translateY(0)";
+            pasek.innerHTML = "";
+            
+            const iloscElementow = 110; 
+            const docelowyIndeks = 100; 
+            
+            for(let i = 0; i < iloscElementow; i++) {
+                let div = document.createElement('div');
+                div.className = 'rp-item';
+                let daneItemu = (i === docelowyIndeks) ? drop : wylosujDrop();
+                div.classList.add('bg-' + daneItemu.klasa);
+                pasek.appendChild(div);
+            }
+            
+            void pasek.offsetWidth;
+            
+            const przesuniecie = -(docelowyIndeks * 40 - 120);
+            
+            pasek.style.transition = "transform 10s cubic-bezier(0.1, 0.85, 0.1, 1)";
+            pasek.style.transform = `translateY(${przesuniecie}px)`;
+            
+            await czekaj(10500);
+            
+            ruletkaKontener.style.display = "none";
+            
+            ekwipunek[drop.postac] = (ekwipunek[drop.postac] || 0) + 1;
+            zapiszEkwipunek(); generujKatalog();
+            
+            wynik.className = drop.klasa; wynik.innerText = drop.postac; wynik.style.display = "block"; 
+            tier.innerText = `[ Rzadkość: ${drop.nazwa} ]`; tier.className = drop.klasa; tier.style.opacity = 1;
+
+            odswiezUI(); // Przywraca przyciski jeśli gracz ma więcej talonów
+        }
+
+        // --- KATALOG & KONTRAKTY (BEZ ZMIAN W LOGICE) ---
+        function zaladujEkwipunek() {
+            const zapis = localStorage.getItem('odblokowanePostaci');
+            if (zapis) {
+                const zdekodowane = JSON.parse(zapis);
+                if (Array.isArray(zdekodowane)) {
+                    zdekodowane.forEach(postac => { ekwipunek[postac] = 1; });
+                    zapiszEkwipunek();
+                } else { ekwipunek = zdekodowane; }
+            }
+        }
+        function zapiszEkwipunek() { localStorage.setItem('odblokowanePostaci', JSON.stringify(ekwipunek)); }
+
+        function policzZasobyKategorii(kategoria) {
+            let suma = 0; kategoria.postaci.forEach(p => { if(ekwipunek[p]) suma += ekwipunek[p]; }); return suma;
+        }
+
         function pokazUkryjKatalog() {
             const kontener = document.getElementById('katalog-kontener');
             if (kontener.style.display === "none" || kontener.style.display === "") {
-                kontener.style.display = "block";
-            } else {
-                kontener.style.display = "none";
+                kontener.style.display = "block"; zamknijKreator();
+            } else { kontener.style.display = "none"; }
+        }
+
+        let wybraneDoKontraktu = [];
+        let aktywnyKontraktTIndex = -1;
+
+        function otworzKreator(indexZrodlowy) {
+            aktywnyKontraktTIndex = indexZrodlowy; wybraneDoKontraktu = [];
+            document.getElementById('katalog-lista').style.display = "none";
+            document.getElementById('wymiana-sekcja').style.display = "none";
+            document.getElementById('kreator-kontraktu').style.display = "block";
+            odswiezKreatorUi();
+        }
+
+        function zamknijKreator() {
+            aktywnyKontraktTIndex = -1; wybraneDoKontraktu = [];
+            document.getElementById('kreator-kontraktu').style.display = "none";
+            document.getElementById('katalog-lista').style.display = "block";
+            document.getElementById('wymiana-sekcja').style.display = "block";
+            generujKatalog();
+        }
+
+        function dodajDoSlota(postac) {
+            if (wybraneDoKontraktu.length < 5) {
+                let uzyteSztuki = wybraneDoKontraktu.filter(x => x === postac).length;
+                let posiadaneSztuki = ekwipunek[postac] || 0;
+                if (posiadaneSztuki > uzyteSztuki) { wybraneDoKontraktu.push(postac); odswiezKreatorUi(); }
             }
         }
 
-        // Funkcja rysująca zawartość katalogu
-        function generujKatalog() {
-            const lista = document.getElementById('katalog-lista');
-            const statystyki = document.getElementById('katalog-statystyki');
-            
-            // Wyczyść starą listę
-            lista.innerHTML = "";
-            
-            // Pokaż postęp np. "Odblokowano: 5 / 33"
-            statystyki.innerText = `Odblokowano: ${odblokowanePostaci.length} / ${odpowiedzi.length}`;
+        function usunZeSlota(indeksSlota) {
+            if (indeksSlota < wybraneDoKontraktu.length) { wybraneDoKontraktu.splice(indeksSlota, 1); odswiezKreatorUi(); }
+        }
 
-            // Wygeneruj każdą postać
-            odpowiedzi.forEach((postac, indeks) => {
-                const elementDiv = document.createElement('div');
-                
-                // Sprawdzamy, czy wylosowałeś już tę postać
-                if (odblokowanePostaci.includes(postac)) {
-                    elementDiv.className = "postac odblokowana";
-                    elementDiv.innerText = `${indeks + 1}. ${postac}`;
-                } else {
-                    elementDiv.className = "postac zablokowana";
-                    elementDiv.innerText = `${indeks + 1}. ??? (Zablokowana)`;
+        function odswiezKreatorUi() {
+            let katZrodlowa = bazaPostaci[aktywnyKontraktTIndex]; let katDocelowa = bazaPostaci[aktywnyKontraktTIndex - 1];
+            document.getElementById('kreator-naglowek').innerHTML = `KREATOR: <span class="${katZrodlowa.klasa}">${katZrodlowa.nazwa}</span> ➔ <span class="${katDocelowa.klasa}">${katDocelowa.nazwa}</span>`;
+            
+            const slotyKontener = document.getElementById('kreator-sloty'); slotyKontener.innerHTML = "";
+            for (let i = 0; i < 5; i++) {
+                let slot = document.createElement('div');
+                if (i < wybraneDoKontraktu.length) {
+                    slot.className = `slot zapelniony ${katZrodlowa.klasa}`; slot.innerText = wybraneDoKontraktu[i]; slot.onclick = () => usunZeSlota(i);
+                } else { slot.className = "slot"; slot.innerText = "PUSTE"; }
+                slotyKontener.appendChild(slot);
+            }
+            
+            const kartyLista = document.getElementById('kreator-karty-lista'); kartyLista.innerHTML = "";
+            katZrodlowa.postaci.forEach(postac => {
+                let posiadane = ekwipunek[postac] || 0;
+                if (posiadane > 0) {
+                    let dostepne = posiadane - wybraneDoKontraktu.filter(x => x === postac).length;
+                    let kartaBtn = document.createElement('div');
+                    if (dostepne > 0) { kartaBtn.className = `karta-do-wyboru ${katZrodlowa.klasa}`; kartaBtn.onclick = () => dodajDoSlota(postac); } 
+                    else { kartaBtn.className = "karta-do-wyboru brak"; }
+                    kartaBtn.innerHTML = `<span>${postac}</span> <span class="ilosc">Dostępne: ${dostepne} / ${posiadane}</span>`;
+                    kartyLista.appendChild(kartaBtn);
                 }
-                
-                lista.appendChild(elementDiv);
+            });
+            document.getElementById('btn-zatwierdz').disabled = wybraneDoKontraktu.length !== 5;
+        }
+
+        function zatwierdzKontrakt() {
+            if (wybraneDoKontraktu.length !== 5) return;
+            let katDocelowa = bazaPostaci[aktywnyKontraktTIndex - 1];
+            wybraneDoKontraktu.forEach(postac => { ekwipunek[postac]--; if (ekwipunek[postac] <= 0) { delete ekwipunek[postac]; } });
+            
+            let nowaPostac = katDocelowa.postaci[Math.floor(Math.random() * katDocelowa.postaci.length)];
+            ekwipunek[nowaPostac] = (ekwipunek[nowaPostac] || 0) + 1;
+            zapiszEkwipunek(); alert(`🎉 KONTRAKT ZATWIERDZONY!\n\nWylosowano nowy, wyższy tier:\n⭐ ${nowaPostac} [${katDocelowa.nazwa}]`);
+            zamknijKreator();
+        }
+
+        function generujKatalog() {
+            const lista = document.getElementById('katalog-lista'); const statystyki = document.getElementById('katalog-statystyki'); const sekcjaWymiany = document.getElementById('wymiana-sekcja');
+            lista.innerHTML = "";
+            let zdobyteUnikalne = Object.keys(ekwipunek).length; let wszystkieUnikalne = bazaPostaci.reduce((suma, kategoria) => suma + kategoria.postaci.length, 0);
+            statystyki.innerText = `Odkryte postaci: ${zdobyteUnikalne} / ${wszystkieUnikalne}`;
+
+            sekcjaWymiany.innerHTML = '<div class="wymiana-tytul">🔄 Menu Kontraktów (Wymiana 5 ➔ 1)</div>';
+            for(let i = 5; i >= 1; i--) {
+                let katZrodlowa = bazaPostaci[i]; let katDocelowa = bazaPostaci[i-1]; let posiadaneSztuki = policzZasobyKategorii(katZrodlowa);
+                let rzad = document.createElement('div'); rzad.className = 'wymiana-rzad';
+                let info = document.createElement('span'); info.innerHTML = `Potrzebujesz 5x <span class="${katZrodlowa.klasa}">${katZrodlowa.nazwa}</span> (Masz w sumie: ${posiadaneSztuki})`;
+                let przycisk = document.createElement('button'); przycisk.className = 'wymiana-btn'; przycisk.innerHTML = `Otwórz kreator dla <span style="font-weight:900;" class="${katDocelowa.klasa}">${katDocelowa.nazwa}</span>`;
+                if(posiadaneSztuki >= 5) { przycisk.onclick = () => otworzKreator(i); } else { przycisk.disabled = true; }
+                rzad.appendChild(info); rzad.appendChild(przycisk); sekcjaWymiany.appendChild(rzad);
+            }
+
+            bazaPostaci.forEach(kategoria => {
+                const naglowek = document.createElement('div'); naglowek.className = `kategoria-tytul ${kategoria.klasa}`; naglowek.innerText = `${kategoria.nazwa} (Szansa na drop: ${kategoria.szansa}%)`; lista.appendChild(naglowek);
+                kategoria.postaci.forEach((postac, indeks) => {
+                    const el = document.createElement('div');
+                    if (ekwipunek[postac]) { el.className = `postac ${kategoria.klasa}`; el.innerHTML = `<span>${indeks + 1}. ${postac}</span> <span class="ilosc">x${ekwipunek[postac]}</span>`; } 
+                    else { el.className = "postac zablokowana"; el.innerHTML = `<span>${indeks + 1}. ??? (Nieodkryta)</span> <span class="ilosc">x0</span>`; }
+                    lista.appendChild(el);
+                });
             });
         }
     </script>
